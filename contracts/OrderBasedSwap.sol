@@ -47,8 +47,8 @@ contract OrderSwap {
     function fulfillOrder(uint256 orderId) external {
         Order storage order = orders[orderId];
         require(order.isActive, "Order is not active");
-
-        
+          require(msg.sender != address(0), "address zero");
+        require(IERC20(order.tokenToReceive).balanceOf(msg.sender) >= order.amountToReceive, "Insufficient balance");
         IERC20(order.tokenToReceive).transferFrom(msg.sender, order.depositor, order.amountToReceive);
 
        
